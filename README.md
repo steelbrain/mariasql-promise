@@ -1,7 +1,18 @@
+MySQL-Promise
+==============
+A lightweight Promise wrapper for MariaSQL (MySQL Compatible).
 
+#### Installation
 
-"use strict";
-var Driver = require('../Main');
+```bash
+npm install mysql-promise
+```
+
+#### Usage
+
+A codeblock says it all
+```js
+var Driver = require('mysql-promise');
 var Maria = new Driver;
 Maria.connect({
   host: '127.0.0.1',
@@ -17,3 +28,8 @@ Maria.connect({
     Maria.end();
   });
 });
+```
+
+#### License
+
+This project is licensed under the terms of MIT License. See the LICENSE file for more info.
