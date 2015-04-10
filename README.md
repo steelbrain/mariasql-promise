@@ -1,18 +1,18 @@
-MySQL-Promise
+MariaSQL-Promise
 ==============
 A lightweight Promise wrapper for MariaSQL (MySQL Compatible).
 
 #### Installation
 
 ```bash
-npm install mysql-promise
+npm install mariasql-promise
 ```
 
 #### Usage
 
 A codeblock says it all
 ```js
-var Driver = require('mysql-promise');
+var Driver = require('mariasql-promise');
 var Maria = new Driver;
 Maria.connect({
   host: '127.0.0.1',
