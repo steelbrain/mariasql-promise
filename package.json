@@ -2,7 +2,7 @@
   "name": "mariasql-promise",
   "version": "0.1.1",
   "description": "A lightweight Promise wrapper for mariasql (mysql compatible)",
-  "main": "Main.js",
+  "main": "lib/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,8 +22,8 @@
     "url": "https://github.com/steelbrain/mariasql-promise/issues"
   },
   "homepage": "https://github.com/steelbrain/mariasql-promise",
-  "dependencies":{
-
+  "dependencies": {
+    "mariasql": "^0.2.5"
   },
   "devDependencies": {
     "babel-preset-steelbrain": "^1.0.0"
