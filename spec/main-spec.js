@@ -3,9 +3,9 @@
 const Driver = require('../').MariaSQL
 const db = new Driver()
 db.connect({
-  host: '192.168.50.3',
-  user: 'call',
-  password: 'test',
+  host: '127.0.0.1',
+  user: 'root',
+  password: '',
   db: 'information_schema'
 }).then(function(){
   console.log('connected')
