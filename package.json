@@ -1,6 +1,6 @@
 {
   "name": "mariasql-promise",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "A lightweight Promise wrapper for mariasql (mysql compatible)",
   "main": "lib/main.js",
   "scripts": {
