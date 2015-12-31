@@ -23,10 +23,9 @@
   },
   "homepage": "https://github.com/steelbrain/mariasql-promise",
   "dependencies":{
-    "a-promise": "latest",
-    "mariasql": "latest"
+
   },
-  "scripts":{
-    "prepublish": "mkdir -p Dist; uc-compile Source/Main.js"
+  "devDependencies": {
+    "babel-preset-steelbrain": "^1.0.0"
   }
 }
