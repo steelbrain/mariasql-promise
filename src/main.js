@@ -1,43 +1,41 @@
+'use babel'
 
+import MariaSQLVanilla from 'mariasql'
 
-// @Compiler-Transpile "true"
-// @Compiler-Output "../Dist/Main.js"
-"use strict";
-var
-  Client = require('mariasql'),
-  Promise = require('a-promise');
-class MariaSQL{
-  constructor(){
-    this.Client = new Client();
+export class MariaSQL {
+  constructor() {
+    this.client = new MariaSQLVanilla()
   }
-  connect(Config){
-    return new Promise(function(Resolve, Reject){
-      this.Client.connect(Config);
-      this.Client.on('error', Reject).on('connect', Resolve);
-    }.bind(this));
+  connect(config) {
+    return new Promise((resolve, reject) => {
+      this.client.on('error', reject).on('ready', resolve)
+      this.client.connect(config)
+    })
   }
-  prepare(Query){
-    return this.Client.prepare(Query);
+  get connected() {
+    return this.client.connected
   }
-  query(Query, SecondArg){
-    return new Promise(function(Resolve, Reject){
-      var Event =
-        typeof SecondArg === 'undefined' ? this.Client.query(Query) : this.Client.query(Query, SecondArg);
-      var ToReturn = [];
-      Event.on('result', function(Row){
-        Row.on('row', function(row){
-          ToReturn.push(row);
-        }).on('error', Reject);
-      }).on('end', function(){
-        Resolve(ToReturn);
-      });
-    }.bind(this));
+  get connecting() {
+    return this.client.connecting
   }
-  end(){
-    this.Client.end();
+  query(query, params = null) {
+    return new Promise((resolve, reject) => {
+      this.client.query(query, params, function(error, rows) {
+        if (error) {
+          reject(error)
+        } else resolve(rows)
+      })
+    })
   }
-  destroy(){
-    this.Client.destroy();
+  prepare(query) {
+    return this.client.prepare(query)
+  }
+  close() {
+    // Terminate
+    this.client.close()
+  }
+  end() {
+    // Gracefully
+    this.client.end()
   }
 }
-module.exports = MariaSQL;
