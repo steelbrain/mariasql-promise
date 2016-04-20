@@ -1,41 +1,66 @@
-'use babel'
+'use strict'
 
-import MariaSQLVanilla from 'mariasql'
+/* @flow */
 
-export class MariaSQL {
+import MaryaSQL from 'mariasql'
+
+type Config = {
+  host: string,
+  user: string,
+  password: string
+} // More can be found in mariasql README
+
+class MariaSQL {
+  connection: MaryaSQL;
+
   constructor() {
-    this.client = new MariaSQLVanilla()
+    this.connection = new MaryaSQL()
   }
-  connect(config) {
+  connect(config: Config): Promise {
     return new Promise((resolve, reject) => {
-      this.client.on('error', reject).on('ready', resolve)
-      this.client.connect(config)
+      const errorListener = error => {
+        this.connection.removeListener('error', errorListener)
+        this.connection.removeListener('ready', successListener)
+        reject(error)
+      }
+      const successListener = () => {
+        this.connection.removeListener('ready', successListener)
+        this.connection.removeListener('error', errorListener)
+        resolve()
+      }
+      this.connection
+        .on('error', errorListener)
+        .on('ready', successListener)
+        .connect(config)
     })
   }
-  get connected() {
-    return this.client.connected
+  prepare(query: string): Object {
+    return this.connection.prepare(query)
   }
-  get connecting() {
-    return this.client.connecting
-  }
-  query(query, params = null) {
+  query(query: string | Object, params: ?Object | ?string = null): Promise {
     return new Promise((resolve, reject) => {
-      this.client.query(query, params, function(error, rows) {
+      this.connection.query(query, params, function(error, rows) {
         if (error) {
           reject(error)
         } else resolve(rows)
       })
     })
   }
-  prepare(query) {
-    return this.client.prepare(query)
+  getStatus(): string {
+    if (this.connection.connecting) {
+      return 'connecting'
+    }
+    if (this.connection.connected) {
+      return 'connected'
+    }
+    return 'idle'
   }
-  close() {
-    // Terminate
-    this.client.close()
+  terminate() {
+    this.connection.close()
   }
-  end() {
-    // Gracefully
-    this.client.end()
+  dispose() {
+    return this.connection.end()
   }
 }
+
+module.exports = MariaSQL

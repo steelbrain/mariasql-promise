@@ -1,6 +1,6 @@
 MariaSQL-Promise
 ==============
-A lightweight Promise wrapper for [MariaSQL](1) (MySQL Compatible).
+A lightweight Promise wrapper for [MariaSQL](1) that also works with MySQL. To see the list of available options, please have a look at [MariaSQL](1)'s README.
 
 #### Installation
 
@@ -10,7 +10,7 @@ npm install mariasql-promise
 
 #### Usage
 ```js
-import {MariaSQL} from 'mariasql-promise'
+import MariaSQL from 'mariasql-promise'
 
 const db = new MariaSQL()
 db.connect({
@@ -21,35 +21,41 @@ db.connect({
 }).then(function() {
   console.log('connected')
 
-  return db.query('Select 1 + 1 as result').then(function(results){
-    console.log(results[0].result) // Outputs 2
-
-    const prepared = db.prepare('Select ? + ? as result')
-
-    return db.query(prepared([1, 1])).then(function(results) {
-      console.log(results[0].result)
-      db.end()
+  const selectQuery = db.query('Select 1 + 1 as result')
+    .then(function(rows) {
+      console.log('result was', rows[0].result)
     })
-  })
-}, function(e) {
+  const escapedQuery = db.query('Select * from users where id = ? LIMIT 1', [1])
+    .then(function(rows) {
+      console.log('the user was', rows.length ? 'found' : 'not found')
+    })
+  const parameterizedQuery = db.query('Select * from users where id = :id and name = :name LIMIT 1', [1, 'steel'])
+    .then(function(rows) {
+      console.log('steel was', rows.length ? 'found' : 'not found')
+    })
+  const preparedQuery = db.query(db.prepare('Select COUNT(users) as count from users as a where EXISTS(Select 1 from users where user.name = a.name AND user.id != a.id)'))
+    .then(function(rows) {
+      console.log('number of users with same name is', rows[0].count)
+    })
+
+  return Promise.all([selectQuery, escapedQuery, parameterizedQuery, preparedQuery])
+}).catch(function(e) {
   console.log('We have a problem', e.message, e.stack)
 })
 ```
 
 #### API
+
 ```js
 export class MariaDB {
-  connected: Boolean
-  connecting: Boolean
-
-  constructor()
   connect(config): Promise
   query(query, params = null): Promise<Array<Object>>
   prepare(query: String)
-  close() // Terminate
-  end() // Gracefully
+  terminate()
+  dispose()
 }
 ```
+
 #### License
 
 This project is licensed under the terms of MIT License. See the LICENSE file for more info.
