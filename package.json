@@ -26,6 +26,6 @@
     "mariasql": "^0.2.5"
   },
   "devDependencies": {
-    "babel-preset-steelbrain": "^1.0.0"
+    "babel-preset-steelbrain": "^2.0.1"
   }
 }
