@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "global-require": 0
+  },
+  "globals": {
+    "waitsForPromise": true
+  },
+  "env": {
+    "jasmine": true
+  }
+}
