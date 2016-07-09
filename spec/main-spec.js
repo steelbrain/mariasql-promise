@@ -15,7 +15,7 @@ describe('MariaSQL', function() {
         host: '127.0.0.1',
         user: 'root',
         password: 'steel',
-        db: 'information_schema'
+        db: 'information_schema',
       }).then(function() {
         console.log('connected')
         return db.query('Select 1 + 1 as result').then(function(results) {
