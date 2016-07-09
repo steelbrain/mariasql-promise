@@ -1,5 +1,3 @@
-'use strict'
-
 /* @flow */
 
 import MaryaSQL from 'mariasql'
@@ -16,7 +14,7 @@ class MariaSQL {
   constructor() {
     this.connection = new MaryaSQL()
   }
-  connect(config: Config): Promise {
+  connect(config: Config): Promise<void> {
     return new Promise((resolve, reject) => {
       const errorListener = error => {
         this.connection.removeListener('error', errorListener)
@@ -37,7 +35,7 @@ class MariaSQL {
   prepare(query: string): Object {
     return this.connection.prepare(query)
   }
-  query(query: string | Object, params: ?Object | ?string = null): Promise {
+  query(query: string | Object, params: ?Object | ?string = null): Promise<void> {
     return new Promise((resolve, reject) => {
       this.connection.query(query, params, function(error, rows) {
         if (error) {
