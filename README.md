@@ -1,5 +1,7 @@
 MariaSQL-Promise
 ==============
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/steelbrain/mariasql-promise.svg)](https://greenkeeper.io/)
 A lightweight Promise wrapper for [MariaSQL](1) that also works with MySQL. To see the list of available options, please have a look at [MariaSQL](1)'s README.
 
 #### Installation
